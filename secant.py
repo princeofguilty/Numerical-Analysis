@@ -1,51 +1,57 @@
 import math
-from math import sqrt, pow, log, exp
+from math import sqrt, pow, log, exp, sin, cos, tan
 
-ge = input('Function of x : ')
-ge = compile(ge, "<string>", "eval")
-f = lambda x: eval(ge)
+input_function = input('Function of x : ')
+input_function = compile(input_function, "<string>", "eval")
+f = lambda x: eval(input_function)
 
-def secant(x0, x1, e, N):
+def secant(a, b, e, N):
     print('\n\n*** SECANT METHOD IMPLEMENTATION ***')
-    step = 1
+    iteration = 1
     condition = True
     Xold = None
     while condition:
-        if f(x0) == f(x1):
+        if f(a) == f(b):
             print('Divide by zero error!')
             break
-
-        x2 = x0 - (x1 - x0) * f(x0) / (f(x1) - f(x0))
-        print('Iteration-%d, x2 = %0.6f and f(x2) = %0.6f' % (step, x2, f(x2)), end='')
+        
+        p2 = a - (b - a) * f(a) / (f(b) - f(a))
+        print("USING : P0 = %0.6f, P1=%0.6f" %(a, b))
+        print('Iteration-%d, p2 = %0.6f and f(p2) = %0.6f' % (iteration, p2, f(p2)), end='')
         if (Xold == None):
             print('')
         else:
-            print(', error =', abs((x2 - Xold) / x2 * 100), '%')
-        x0 = x1
-        x1 = x2
-        step = step + 1
+            print(', error =', abs((p2 - Xold) / p2 * 100), '%')
+        a = b
+        b = p2
+        iteration = iteration + 1
 
-        if step > N:
+        if iteration > N:
             break
-
-        condition = abs(f(x2)) > e
-        Xold = x2
-    print('\n Xm: %0.8f' % (x2))
+        
+        print() ##newline
+        condition = abs(f(p2)) > e
+        Xold = p2
+    print('\n point: %0.8f' % (p2))
 
 
 # Input Section
-x0 = input('First Guess: ')
-x1 = input('Second Guess: ')
+a = input('First Guess: ')
+b = input('Second Guess: ')
 e = input('Tolerable Error: ')
 n = int(input('Maximum iterations: '))
 
 # Converting input to float
-x0 = float(x0)
-x1 = float(x1)
+a = float(a)
+b = float(b)
 e = float(e)
 
-if f(x0) * f(x1) > 0.0:
-    print('Given guess values do not bracket the root.')
-    print('Try Again with different guess values.')
-else:
-    secant(x0, x1, e, n)
+# if f(x0) * f(x1) > 0.0:
+#     print('Given guess values do not bracket the root.')
+#     print('Try Again with different guess values.')
+# else:
+#     print("INPUTS : a = %0.6f, b = %0.6f" %(a,b))
+#     secant(x0, x1, e, n)
+
+print("INPUTS : a = %0.6f, b = %0.6f" %(a,b))
+secant(a, b, e, n)

@@ -1,52 +1,58 @@
 import math
-from math import sqrt, pow, log, exp
-ge = input('Function of x : ')
-ge = compile(ge, "<string>", "eval")
-f = lambda x: eval(ge)
+from math import sqrt, pow, log, exp, sin, cos, tan
 
-def bisection(x0, x1, e, n):
-    step = 1
+input_function = input('Function of x : ')
+input_function = compile(input_function, "<string>", "eval")
+f = lambda x: eval(input_function)
+
+def bisection(a, b, e, n):
+    iteration = 1
     print('\n\n*** FALSE POSITION METHOD IMPLEMENTATION ***')
     condition = True
-    Xold = None
+    point_old = None
     while condition and n != 0:
-
-        x2 = x0 - f(x0) * (x0 - x1) / (f(x0) - f(x1))
-        print('Iteration-%d, x2 = %0.6f and f(x2) = %0.6f' % (step, x2, f(x2)), end='')
-        if (Xold == None):
+        if f(a) == f(b):
+            print('Divide by zero error!')
+            break
+        x_middle = a - f(a) * (a - b) / (f(a) - f(b))
+        print('Iteration-%d, point = %0.6f and f(point) = %0.6f' % (iteration, x_middle, f(x_middle)), end='')
+        if (point_old == None):
             print('')
         else:
-            print(', error =', abs((x2 - Xold) / x2 * 100), '%')
-        if f(x0) * f(x2) < 0:
-            x1 = x2
+            print(', error =', abs((x_middle - point_old) / x_middle * 100), '%')
+            
+        if f(a) * f(x_middle) < 0:
+            b = x_middle
         else:
-            x0 = x2
-
-        if (x2 == 0):
+            a = x_middle
+            
+        print(",\tUPDATE : a = %0.6f, b = %0.6f\n" %(a,b))
+        if (x_middle == 0):
             break
 
-        step = step + 1
-        condition = abs(f(x2)) > e
+        iteration = iteration + 1
+        condition = abs(f(x_middle)) > e
         n -= 1
-        Xold = x2
+        point_old = x_middle
 
-    print('\nRequired Root is : %0.8f' % x2)
+    print('\nRequired Root is : %0.8f' % x_middle)
 
 
 # Input Section
-x0 = input('First Guess: ')
-x1 = input('Second Guess: ')
+a = input('First Guess: ')
+b = input('Second Guess: ')
 e = input('Tolerable Error: ')
 n = int(input('Maximum iterations: '))
 
 # Converting input to float
-x0 = float(x0)
-x1 = float(x1)
+a = float(a)
+b = float(b)
 e = float(e)
 
 
-if f(x0) * f(x1) > 0.0:
+if f(a) * f(b) > 0.0:
     print('Given guess values do not bracket the root.')
     print('Try Again with different guess values.')
 else:
-    bisection(x0, x1, e, n)
+    print("INPUTS : a = %0.6f, b = %0.6f" %(a,b))
+    bisection(a, b, e, n)

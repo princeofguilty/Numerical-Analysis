@@ -1,33 +1,40 @@
 import sympy
 import math
-from math import sqrt, pow, log, exp
+from math import sqrt, pow, log, exp, sin, cos, tan
+import re
 
-ge1 = input('Function of x : ')
-ge = compile(ge1, "<string>", "eval")
-f = lambda x: eval(ge)
+## WARNING
+## Don't use POW(x,#)
 
-s = sympy.parse_expr(ge1, evaluate=False)
-g = sympy.diff(s)
-x = sympy.Symbol('x')
-gk = sympy.lambdify(x, g)
+input_function = input('Function of x : ')
+compiled_function = compile(input_function, "<string>", "eval")
+######################################
+f = lambda x: eval(compiled_function)
+######################################
 
+input_function_sympy = sympy.parse_expr(input_function, evaluate=False)
+differentiation_function = sympy.diff(input_function_sympy)
+tmp = sympy.Symbol('x')
+#######################################################
+f_dash = sympy.lambdify(tmp, differentiation_function)
+#######################################################
 
-def newtonRaphson(x0, e, N):
+def newtonRaphson(x0, e, n):
     print('\n\n*** NEWTON RAPHSON METHOD IMPLEMENTATION ***')
-    step = 1
+    iteration = 1
     flag = 1
     condition = True
     while condition:
-        if gk(x0) == 0.0:
+        if f_dash(x0) == 0.0:
             print('Divide by zero error!')
             break
 
-        x1 = x0 - f(x0) / gk(x0)
-        print('Iteration-%d, x1 = %0.6f and f(x1) = %0.6f, error = %0.6f %% ' % (step, x1, f(x1), abs(x1-x0)*100))
+        x1 = x0 - f(x0) / f_dash(x0)
+        print('Iteration-%d, x1 = %0.6f and f(x1) = %0.6f, error = %0.6f %% ' % (iteration, x1, f(x1), abs(x1-x0)))
         x0 = x1
-        step = step + 1
+        iteration = iteration + 1
 
-        if step > N:
+        if iteration > n:
             flag = 0
             break
 

@@ -1,9 +1,9 @@
 import math
-from math import sqrt, pow, log, exp
+from math import sqrt, pow, log, exp, sin, cos, tan
 
-ge = input('Function of x : ')
-ge = compile(ge, "<string>", "eval")
-f = lambda x: eval(ge)
+input_function = input('Function of x : ')
+input_function = compile(input_function, "<string>", "eval")
+f = lambda x: eval(input_function)
 
 
 
